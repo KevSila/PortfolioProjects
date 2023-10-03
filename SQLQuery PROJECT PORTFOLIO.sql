@@ -1,11 +1,16 @@
+--This dataset is retrieved from the website 'ourworldindata.org'. Specifically, coronavirus (COVID-19 deaths). Downloaded as a csv file.
+--The dataset is from January 2020 when vaccinations started, to 27th February 2023.  
+--I imported two Excel workbooks (Covid deaths and Covid Vaccinations)
+--The SQL queries mostly analyze the dataset from Kenya.
+
 --Testing if Tables have loaded correctly
 Select *
 from PortfolioProject..[COVID Deaths]
 order by 3,4
 
-----Select *
-----from PortfolioProject..[COVID Vaccinations]
-----order by 3,4
+Select *
+from PortfolioProject..[COVID Vaccinations]
+order by 3,4
 
 --Selecting Data that I'll be using
 
@@ -16,20 +21,20 @@ order by 1,2
 --Looking at the total cases vs Total Deaths. This indicates the death percentage with relation to the total cases recorded in Kenya.
 --This shows the likelihood of dying if you contract covid in Kenya
 
-Select Location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 as DeathPercentage
-From PortfolioProject..[COVID Deaths]
+Select Location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 as DeathPercentageInKenya
+From Portfolio Project..[COVID Deaths]
 where location= 'kenya'
 order by 1,2
 
---Looking at the total cases vs Total Deaths. This indicates the death percentage with relation to the total cases recorded.
---This shows the likelihood of dying if you contract covid in your country
+--Looking at the total cases vs Total Deaths. This indicates the death percentage in relation to the total cases recorded.
+--For the Death percentage, we would say it shows the likelihood of dying if you contract covid in that specific country, as of the date specified.
 Select Location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 as DeathPercentage
 From PortfolioProject..[COVID Deaths]
 order by 1,2
 
 --Looking at the total cases vs the population in Kenya
 --Shows what percentage of population have covid
-Select Location, date, total_cases, population, (total_cases/population)*100 as PopulationPercentageHavingCovid
+Select Location, date, total_cases, population, (total_cases/population)*100 as PopulationPercentageHavingCovidInKenya
 From PortfolioProject..[COVID Deaths]
 where location= 'Kenya'
 order by 1,2
@@ -37,13 +42,14 @@ order by 1,2
 --Looking at countries with highest infection rate compared to the population
 --The GROUP BY statement groups rows that have the same values into summary rows.
 --The GROUP BY statement is often used with aggregate functions ( COUNT() , MAX() , MIN() , SUM() , AVG() ) to group the result-set by one or more columns.
+--In this case, The max function only pulls the maximum total cases from the table covid deaths.
 Select Location, population, max(total_cases) as HighestInfectionCount,max(total_cases/population)*100 as PopulationPercentageHavingCovid
 From PortfolioProject..[COVID Deaths]
 group by Location, population
 order by PopulationPercentageHavingCovid desc
 
 --Showing countries with highest death count per population
---I have added the 'where continent is not null" to show data of countries only, and not groupings of countries found in specific continnents such as Africa,World etc.
+--I have added the 'where continent is not null" to show data of countries only, and not groupings of countries found in specific continents such as Africa,World etc. The data set I am working with had groupings of continents in them.
 --The SQL CAST function is mainly used to convert the expression from one data type to another data type. In our case, the data type was varchar, and I have converted it into Int.
 Select location, max(cast(total_deaths as int)) as TotalDeathCount
 From PortfolioProject..[COVID Deaths]
