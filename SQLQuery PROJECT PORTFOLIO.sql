@@ -4,12 +4,15 @@
 --The SQL queries mostly analyze the dataset from Kenya.
 
 --Testing if Tables have loaded correctly
+--I have added the 'where continent is not null" to show data of countries only, and not groupings of countries found in specific continents such as Africa,World etc.
 Select *
 from PortfolioProject..[COVID Deaths]
+where continent is not null
 order by 3,4
 
 Select *
 from PortfolioProject..[COVID Vaccinations]
+where continent is not null
 order by 3,4
 
 --Selecting Data that I'll be using
